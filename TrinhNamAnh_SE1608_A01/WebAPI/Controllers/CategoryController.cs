@@ -14,7 +14,7 @@ namespace WebAPi.Controllers
     [ApiController]
     public class CategoryController : ControllerBase
     {
-        public IUnitOfWork _unitOfWork;
+        private IUnitOfWork _unitOfWork;
 
         public CategoryController(IUnitOfWork unitOfWork)
         {
@@ -74,12 +74,7 @@ namespace WebAPi.Controllers
         [HttpPost]
         public async Task<ActionResult<Category>> PostCategory(Category category)
         {
-            if (_unitOfWork.CategoryService.Get() == null)
-            {
-                return Problem("Entity set 'FUFlowerBouquetManagementContext.Categories'  is null.");
-            }
             await _unitOfWork.CategoryService.Add(category);
-
             return CreatedAtAction("GetCategory", new { id = category.CategoryId }, category);
         }
 
