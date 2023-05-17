@@ -1,5 +1,4 @@
-﻿
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using BussinessObject.Models;
 using ApplicationService.UnitOfWork;
 using System;

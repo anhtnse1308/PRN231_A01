@@ -1,5 +1,4 @@
-﻿
-using BussinessObject.Models;
+﻿using BussinessObject.Models;
 using ApplicationService.Generic;
 using ApplicationService.Service;
 using ApplicationService.UnitOfWork;
