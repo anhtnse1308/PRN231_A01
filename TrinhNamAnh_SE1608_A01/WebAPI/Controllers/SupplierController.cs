@@ -25,19 +25,20 @@ namespace WebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Supplier>>> GetSuppliers()
         {
-            if (_unitOfWork.SupplierService.Get() == null)
+            var list = await _unitOfWork.SupplierService.Get();
+            if (list == null)
             {
                 return NotFound();
             }
-            var suppliers = await _unitOfWork.SupplierService.Get();
-            return suppliers.ToList();
+            return list.ToList();
         }
 
         // GET: api/Supplier/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Supplier>> GetSupplier(int id)
         {
-            if (_unitOfWork.SupplierService.Get() == null)
+            var list = await _unitOfWork.SupplierService.Get();
+            if (list == null)
             {
                 return NotFound();
             }
@@ -78,7 +79,8 @@ namespace WebAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteSupplier(int id)
         {
-            if (_unitOfWork.SupplierService.Get() == null)
+            var list = await _unitOfWork.SupplierService.Get();
+            if (list == null)
             {
                 return NotFound();
             }

@@ -25,11 +25,11 @@ namespace WebAPi.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Category>>> GetCategories()
         {
-            if (_unitOfWork.CategoryService.Get() == null)
+            var list = await _unitOfWork.CategoryService.Get();
+            if (list == null)
             {
                 return NotFound();
             }
-            var list = await _unitOfWork.CategoryService.Get();
             return list.ToList();
         }
 
@@ -37,7 +37,8 @@ namespace WebAPi.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Category>> GetCategory(int id)
         {
-            if (_unitOfWork.CategoryService.Get() == null)
+            var list = await _unitOfWork.CategoryService.Get();
+            if (list == null)
             {
                 return NotFound();
             }
@@ -82,7 +83,8 @@ namespace WebAPi.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCategory(int id)
         {
-            if (_unitOfWork.CategoryService.Get() == null)
+            var list = await _unitOfWork.CategoryService.Get();
+            if (list == null)
             {
                 return NotFound();
             }

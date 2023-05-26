@@ -25,19 +25,20 @@ namespace WebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Customer>>> GetCustomers()
         {
-            if (_unitOfWork.CustomerService.Get() == null)
+            var list = await _unitOfWork.CustomerService.Get();
+            if (list == null)
             {
                 return NotFound();
             }
-            var customer = await _unitOfWork.CustomerService.Get();
-            return customer.ToList();
+            return list.ToList();
         }
 
         // GET: api/Customer/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Customer>> GetCustomer(int id)
         {
-            if (_unitOfWork.CustomerService.Get() == null)
+            var list = await _unitOfWork.CustomerService.Get();
+            if (list == null)
             {
                 return NotFound();
             }
@@ -79,7 +80,8 @@ namespace WebAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCustomer(int id)
         {
-            if (_unitOfWork.CustomerService.Get() == null)
+            var list = await _unitOfWork.CustomerService.Get();
+            if (list == null)
             {
                 return NotFound();
             }

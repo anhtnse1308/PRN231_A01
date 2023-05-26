@@ -25,19 +25,20 @@ namespace WebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<FlowerBouquet>>> GetFlowerBouquets()
         {
-            if (_unitOfWork.FlowerBouquetService.Get() == null)
+            var list = await _unitOfWork.FlowerBouquetService.Get();
+            if (list == null)
             {
                 return NotFound();
             }
-            var flowerbouquets = await _unitOfWork.FlowerBouquetService.Get();
-            return flowerbouquets.ToList();
+            return list.ToList();
         }
 
         // GET: api/FlowerBouquet/5
         [HttpGet("{id}")]
         public async Task<ActionResult<FlowerBouquet>> GetFlowerBouquet(int id)
         {
-            if (_unitOfWork.FlowerBouquetService.Get() == null)
+            var list = await _unitOfWork.FlowerBouquetService.Get();
+            if (list == null)
             {
                 return NotFound();
             }
@@ -79,7 +80,8 @@ namespace WebAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteFlowerBouquet(int id)
         {
-            if (_unitOfWork.FlowerBouquetService.Get() == null)
+            var list = await _unitOfWork.FlowerBouquetService.Get();
+            if (list == null)
             {
                 return NotFound();
             }
