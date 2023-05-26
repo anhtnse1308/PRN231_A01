@@ -32,11 +32,12 @@ namespace WebAPI.Controllers
             {
                 return BadRequest("Email is null or empty");
             }
-            Customer customer = null;
+            Customer customer = new Customer();
             var admin= Extension.Helper.ImportJson();
             if(admin.Email == email && admin.Password == password)
             {
-                customer = admin;
+                customer.Email = email;
+                customer.Password = password;
                 return Ok(customer);
             }
             else
@@ -49,7 +50,7 @@ namespace WebAPI.Controllers
                     return Ok(customer);
                 }
             }
-            return Ok("Login failed please check email or password");
+            return BadRequest("Login failed please check email or password");
         }
     }
 }

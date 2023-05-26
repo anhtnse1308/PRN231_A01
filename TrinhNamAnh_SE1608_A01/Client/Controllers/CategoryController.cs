@@ -17,9 +17,7 @@ namespace Client.Controllers
     {
         public CategoryController()
         {
-            
         }
-
         // GET: Category
         public async Task<IActionResult> Index()
         {
@@ -42,62 +40,6 @@ namespace Client.Controllers
                 ViewData.Model = list;
             }
             return View();
-        }
-
-        // GET: Category/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            
-            return View();
-        }
-
-        // GET: Category/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Category/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CategoryId,CategoryName,CategoryDescription")] Category category)
-        {
-            
-            return View(category);
-        }
-
-        // GET: Category/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            
-            return View();
-        }
-
-        // POST: Category/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CategoryId,CategoryName,CategoryDescription")] Category category)
-        {
-            
-            return View(category);
-        }
-
-        // GET: Category/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            return View();
-        }
-
-        // POST: Category/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            return RedirectToAction(nameof(Index));
         }
     }
 }

@@ -35,10 +35,11 @@ namespace Client.Controllers
                 {
                     string rs = getData.Content.ReadAsStringAsync().Result;
                     customer = JsonConvert.DeserializeObject<Customer>(rs);
+                    return RedirectToAction("Index", "Customer");
                 }
-                else
+                else if (!getData.IsSuccessStatusCode)
                 {
-                    Console.WriteLine("Read API failed");
+                    return View("Index");
                 }
             }
             return View("Index");
