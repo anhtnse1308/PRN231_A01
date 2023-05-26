@@ -9,28 +9,30 @@ using BussinessObject.Models;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using Client.Extension;
+using System.Net.Http.Json;
 
 namespace Client.Controllers
 {
-    public class CustomerController : Controller
+    public class FlowerBouquetController : Controller
     {
-        public CustomerController()
+        public FlowerBouquetController()
         {
         }
-        // GET: Customer
+
+        // GET: FlowerBouquet
         public async Task<IActionResult> Index()
         {
-            IEnumerable<Customer> list = new List<Customer>();
+            IEnumerable<FlowerBouquet> list = new List<FlowerBouquet>();
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(Helper.baseUrl);
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                HttpResponseMessage getData = await client.GetAsync("customer");
+                HttpResponseMessage getData = await client.GetAsync("flowerBouquet");
                 if (getData.IsSuccessStatusCode)
                 {
                     string rs = getData.Content.ReadAsStringAsync().Result;
-                    list = JsonConvert.DeserializeObject<IEnumerable<Customer>>(rs);
+                    list = JsonConvert.DeserializeObject<IEnumerable<FlowerBouquet>>(rs);
                 }
                 else
                 {
@@ -41,10 +43,10 @@ namespace Client.Controllers
             return View();
         }
 
-        // GET: Customer/Details/5
+        // GET: FlowerBouquet/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            Customer model = new Customer();
+            FlowerBouquet model = new FlowerBouquet();
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(Helper.baseUrl);
@@ -54,7 +56,7 @@ namespace Client.Controllers
                 if (getData.IsSuccessStatusCode)
                 {
                     string rs = getData.Content.ReadAsStringAsync().Result;
-                    model = JsonConvert.DeserializeObject<Customer>(rs);
+                    model = JsonConvert.DeserializeObject<FlowerBouquet>(rs);
                 }
                 else
                 {
@@ -66,43 +68,43 @@ namespace Client.Controllers
             return View();
         }
 
-        // GET: Customer/Create
+        // GET: FlowerBouquet/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Customer/Create
+        // POST: FlowerBouquet/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CustomerId,Email,CustomerName,City,Country,Password,Birthday")] Customer customer)
+        public async Task<IActionResult> Create([Bind("FlowerBouquetId,CategoryId,FlowerBouquetName,Description,UnitPrice,UnitsInStock,FlowerBouquetStatus,SupplierId")] FlowerBouquet flowerBouquet)
         {
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(Helper.baseUrl);
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                HttpResponseMessage getData = await client.PostAsJsonAsync<Customer>("customer", customer);
+                HttpResponseMessage getData = await client.PostAsJsonAsync<FlowerBouquet>("flowerBouquet", flowerBouquet);
                 if (getData.IsSuccessStatusCode)
                 {
                     string rs = getData.Content.ReadAsStringAsync().Result;
-                    customer = JsonConvert.DeserializeObject<Customer>(rs);
+                    flowerBouquet = JsonConvert.DeserializeObject<FlowerBouquet>(rs);
                 }
                 else
                 {
                     Console.WriteLine("Read API failed");
                 }
-                ViewData.Model = customer;
+                ViewData.Model = flowerBouquet;
             }
-            return View(customer);
+            return View(flowerBouquet);
         }
 
-        // GET: Customer/Edit/5
+        // GET: FlowerBouquet/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            Customer model = new Customer();
+            FlowerBouquet model = new FlowerBouquet();
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(Helper.baseUrl);
@@ -112,7 +114,7 @@ namespace Client.Controllers
                 if (getData.IsSuccessStatusCode)
                 {
                     string rs = getData.Content.ReadAsStringAsync().Result;
-                    model = JsonConvert.DeserializeObject<Customer>(rs);
+                    model = JsonConvert.DeserializeObject<FlowerBouquet>(rs);
                 }
                 else
                 {
@@ -123,31 +125,31 @@ namespace Client.Controllers
             return View();
         }
 
-        // POST: Customer/Edit/5
+        // POST: FlowerBouquet/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CustomerId,Email,CustomerName,City,Country,Password,Birthday")] Customer customer)
+        public async Task<IActionResult> Edit(int id, [Bind("FlowerBouquetId,CategoryId,FlowerBouquetName,Description,UnitPrice,UnitsInStock,FlowerBouquetStatus,SupplierId")] FlowerBouquet flowerBouquet)
         {
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(Helper.baseUrl);
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                HttpResponseMessage getData = await client.PutAsJsonAsync<Customer>("customer", customer);
+                HttpResponseMessage getData = await client.PutAsJsonAsync<FlowerBouquet>("flowerBouquet", flowerBouquet);
                 if (getData.IsSuccessStatusCode)
                 {
                     string rs = getData.Content.ReadAsStringAsync().Result;
-                    customer = JsonConvert.DeserializeObject<Customer>(rs);
+                    flowerBouquet = JsonConvert.DeserializeObject<FlowerBouquet>(rs);
                 }
                 else
                 {
                     Console.WriteLine("Read API failed");
                 }
-                ViewData.Model = customer;
+                ViewData.Model = flowerBouquet;
             }
-            return View(customer);
+            return View(flowerBouquet);
         }
     }
 }

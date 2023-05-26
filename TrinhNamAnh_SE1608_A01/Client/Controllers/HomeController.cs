@@ -35,7 +35,15 @@ namespace Client.Controllers
                 {
                     string rs = getData.Content.ReadAsStringAsync().Result;
                     customer = JsonConvert.DeserializeObject<Customer>(rs);
-                    return RedirectToAction("Index", "Customer");
+                    Helper.Set(HttpContext.Session, "login-user", customer);
+                    if (customer.Email == Helper.ImportJson().Email)
+                    {
+                        return View("IndexAdmin");
+                    }
+                    else
+                    {
+                        return View("IndexMember");
+                    }
                 }
                 else if (!getData.IsSuccessStatusCode)
                 {

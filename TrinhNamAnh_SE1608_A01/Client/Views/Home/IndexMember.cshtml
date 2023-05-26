@@ -1,0 +1,14 @@
+﻿@using Client.Extension;
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Welcome to member page";
+    var loginuser = Helper.GetLoginUser(Context.Session);
+}
+<form>
+    Profile Management<input type="submit" asp-controller="FlowerBouquet" asp-action="Details" asp-route-id="@loginuser.CustomerId"/>
+</form>
+<form>
+    Order History<input type="submit" asp-controller="Order" asp-action="IndexHistory" asp-route-id="@loginuser.CustomerId" />
+</form>

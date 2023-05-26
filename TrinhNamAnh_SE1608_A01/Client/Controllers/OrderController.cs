@@ -12,25 +12,26 @@ using Client.Extension;
 
 namespace Client.Controllers
 {
-    public class CustomerController : Controller
+    public class OrderController : Controller
     {
-        public CustomerController()
+        public OrderController()
         {
         }
-        // GET: Customer
+
+        // GET: Order
         public async Task<IActionResult> Index()
         {
-            IEnumerable<Customer> list = new List<Customer>();
+            IEnumerable<Order> list = new List<Order>();
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(Helper.baseUrl);
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                HttpResponseMessage getData = await client.GetAsync("customer");
+                HttpResponseMessage getData = await client.GetAsync("order");
                 if (getData.IsSuccessStatusCode)
                 {
                     string rs = getData.Content.ReadAsStringAsync().Result;
-                    list = JsonConvert.DeserializeObject<IEnumerable<Customer>>(rs);
+                    list = JsonConvert.DeserializeObject<IEnumerable<Order>>(rs);
                 }
                 else
                 {
@@ -40,21 +41,52 @@ namespace Client.Controllers
             }
             return View();
         }
-
-        // GET: Customer/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> IndexHistory(int? id)
         {
-            Customer model = new Customer();
+            IEnumerable<Order> list = new List<Order>();
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(Helper.baseUrl);
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                HttpResponseMessage getData = await client.GetAsync("customer/" + id);
+                HttpResponseMessage getData = await client.GetAsync("order");
                 if (getData.IsSuccessStatusCode)
                 {
                     string rs = getData.Content.ReadAsStringAsync().Result;
-                    model = JsonConvert.DeserializeObject<Customer>(rs);
+                    list = JsonConvert.DeserializeObject<IEnumerable<Order>>(rs);
+                    list = list.Where(o => o.CustomerId == id);
+                    if (list != null)
+                    {
+                        return View("Index");
+                    }
+                    else
+                    {
+                        RedirectToPage("IndexMember", "Home");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Read API failed");
+                }
+                ViewData.Model = list;
+            }
+            return View("Index");
+        }
+
+        // GET: Order/Details/5
+        public async Task<IActionResult> Details(int? id)
+        {
+            Order model = new Order();
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(Helper.baseUrl);
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage getData = await client.GetAsync("order/" + id);
+                if (getData.IsSuccessStatusCode)
+                {
+                    string rs = getData.Content.ReadAsStringAsync().Result;
+                    model = JsonConvert.DeserializeObject<Order>(rs);
                 }
                 else
                 {
@@ -66,53 +98,53 @@ namespace Client.Controllers
             return View();
         }
 
-        // GET: Customer/Create
+        // GET: Order/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Customer/Create
+        // POST: Order/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CustomerId,Email,CustomerName,City,Country,Password,Birthday")] Customer customer)
+        public async Task<IActionResult> Create([Bind("OrderId,CustomerId,OrderDate,ShippedDate,Total,OrderStatus")] Order order)
         {
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(Helper.baseUrl);
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                HttpResponseMessage getData = await client.PostAsJsonAsync<Customer>("customer", customer);
+                HttpResponseMessage getData = await client.PostAsJsonAsync<Order>("order", order);
                 if (getData.IsSuccessStatusCode)
                 {
                     string rs = getData.Content.ReadAsStringAsync().Result;
-                    customer = JsonConvert.DeserializeObject<Customer>(rs);
+                    order = JsonConvert.DeserializeObject<Order>(rs);
                 }
                 else
                 {
                     Console.WriteLine("Read API failed");
                 }
-                ViewData.Model = customer;
+                ViewData.Model = order;
             }
-            return View(customer);
+            return View(order);
         }
 
-        // GET: Customer/Edit/5
+        // GET: Order/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            Customer model = new Customer();
+            Order model = new Order();
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(Helper.baseUrl);
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                HttpResponseMessage getData = await client.GetAsync("customer/" + id);
+                HttpResponseMessage getData = await client.GetAsync("order/" + id);
                 if (getData.IsSuccessStatusCode)
                 {
                     string rs = getData.Content.ReadAsStringAsync().Result;
-                    model = JsonConvert.DeserializeObject<Customer>(rs);
+                    model = JsonConvert.DeserializeObject<Order>(rs);
                 }
                 else
                 {
@@ -120,34 +152,35 @@ namespace Client.Controllers
                 }
                 ViewData.Model = model;
             }
+
             return View();
         }
 
-        // POST: Customer/Edit/5
+        // POST: Order/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CustomerId,Email,CustomerName,City,Country,Password,Birthday")] Customer customer)
+        public async Task<IActionResult> Edit(int id, [Bind("OrderId,CustomerId,OrderDate,ShippedDate,Total,OrderStatus")] Order order)
         {
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(Helper.baseUrl);
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                HttpResponseMessage getData = await client.PutAsJsonAsync<Customer>("customer", customer);
+                HttpResponseMessage getData = await client.PutAsJsonAsync<Order>("order", order);
                 if (getData.IsSuccessStatusCode)
                 {
                     string rs = getData.Content.ReadAsStringAsync().Result;
-                    customer = JsonConvert.DeserializeObject<Customer>(rs);
+                    order = JsonConvert.DeserializeObject<Order>(rs);
                 }
                 else
                 {
                     Console.WriteLine("Read API failed");
                 }
-                ViewData.Model = customer;
+                ViewData.Model = order;
             }
-            return View(customer);
+            return View(order);
         }
     }
 }
