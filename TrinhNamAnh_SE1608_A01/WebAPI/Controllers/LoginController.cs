@@ -1,12 +1,14 @@
-﻿using ApplicationService.UnitOfWork;
+﻿using ApplicationService.Service;
+using ApplicationService.UnitOfWork;
 using BussinessObject.Models;
 using Microsoft.AspNetCore.Mvc;
+using WebAPI.Models;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace WebAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/login")]
     [ApiController]
     public class LoginController : ControllerBase
     {
@@ -16,9 +18,16 @@ namespace WebAPI.Controllers
             _unitOfWork = unitOfWork;
         }
         // GET: api/<LoginController>
-        [HttpGet]
-        public async Task<ActionResult<Category>> Login(string email, string password)
+        [HttpPost]
+        public async Task<ActionResult<Category>> Login(LoginModel loginCustomer)
         {
+            string email = "";
+            string password = "";
+            if(loginCustomer != null)
+            {
+                email= loginCustomer.Email;
+                password= loginCustomer.Password;
+            }
             if (string.IsNullOrEmpty(email))
             {
                 return BadRequest("Email is null or empty");
@@ -28,6 +37,7 @@ namespace WebAPI.Controllers
             if(admin.Email == email && admin.Password == password)
             {
                 customer = admin;
+                return Ok(customer);
             }
             else
             {
@@ -39,7 +49,7 @@ namespace WebAPI.Controllers
                     return Ok(customer);
                 }
             }
-            return BadRequest("Login failed please check email or password");
+            return Ok("Login failed please check email or password");
         }
     }
 }
