@@ -19,7 +19,7 @@ namespace WebAPI.Controllers
         }
         // GET: api/<LoginController>
         [HttpPost]
-        public async Task<ActionResult<Category>> Login(LoginModel loginCustomer)
+        public async Task<ActionResult<Customer>> Login(LoginModel loginCustomer)
         {
             string email = "";
             string password = "";
